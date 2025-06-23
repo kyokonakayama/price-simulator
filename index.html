@@ -28,36 +28,36 @@
 <body>
   <h1>料金シミュレーター</h1>
 
-  <label>① 契約形態:
+  <label>契約形態:
     <select id="plan">
-      <option value="A">A（スポット契約）</option>
-      <option value="B">B（アドバイザリー顧問）</option>
-      <option value="C">C（レギュラー顧問）</option>
-      <option value="D">D（レギュラー顧問＋給与計算）</option>
+      <option value="A">スポット契約（新規適用のみ）</option>
+      <option value="B">アドバイザリー顧問</option>
+      <option value="C">レギュラー顧問</option>
+      <option value="D">レギュラー顧問＋給与計算</option>
     </select>
   </label><br>
 
-  <label>② 新規適用:
+  <label>新規適用:
     <select id="application">
-      <option value="E">E（社保＋労保）</option>
-      <option value="F">F（社保のみ）</option>
-      <option value="G">G（労保のみ）</option>
+      <option value="E">社会保険・労働保険 両方</option>
+      <option value="F">社会保険のみ</option>
+      <option value="G">労働保険のみ</option>
     </select>
   </label><br>
 
-  <label>③ 従業員数:
+  <label>従業員数:
     <select id="employees">
-      <option value="H">H（5人以下）</option>
-      <option value="I">I（6〜10人）</option>
-      <option value="J">J（11〜20人）</option>
-      <option value="K">K（21人以上）</option>
+      <option value="H">5人以下</option>
+      <option value="I">6〜10人</option>
+      <option value="J">11〜20人</option>
+      <option value="K">21人以上</option>
     </select>
   </label><br>
 
-  <label>④ その他の手続き:</label><br>
+  <label>その他の手続き:</label><br>
   <input type="checkbox" id="rule" value="rule"> 就業規則の作成<br>
   <input type="checkbox" id="kyoutei" value="kyoutei"> 36協定届<br>
-  <input type="checkbox" id="henkei" value="henkei"> 変形労働時間制協定届<br>
+  <input type="checkbox" id="henkei" value="henkei"> 1年変形協定届<br>
 
   <button onclick="calculate()">料金を計算</button>
 
@@ -100,13 +100,13 @@
       const total = initFee + ruleFee + kyouteiFee + henkeiFee;
 
       document.getElementById('result').innerHTML = `
-        <strong>月額料金：</strong> ${monthFee.toLocaleString()}円<br>
         <strong>初回手続き料：</strong> ${initFee.toLocaleString()}円<br>
         <strong>就業規則：</strong> ${ruleFee.toLocaleString()}円<br>
         <strong>36協定：</strong> ${kyouteiFee.toLocaleString()}円<br>
-        <strong>変形労働時間制協定：</strong> ${henkeiFee.toLocaleString()}円<br>
+        <strong>1年変形協定：</strong> ${henkeiFee.toLocaleString()}円<br>
         <hr>
-        <strong>初回合計：</strong> ${total.toLocaleString()}円
+        <strong>初回合計：</strong> ${total.toLocaleString()}円<br>
+        <strong>月額料金：</strong> ${monthFee.toLocaleString()}円
       `;
     }
   </script>
