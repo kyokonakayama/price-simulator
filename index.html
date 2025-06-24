@@ -28,36 +28,36 @@
 <body>
   <h1>料金シミュレーター</h1>
 
-  <label>契約形態:
+  <label>① 契約形態:
     <select id="plan">
-      <option value="A">Aスポット契約（新規適用のみ）</option>
-      <option value="B">Bアドバイザリー顧問</option>
-      <option value="C">Cレギュラー顧問</option>
-      <option value="D">Dレギュラー顧問＋給与計算</option>
+      <option value="A">A 新規適用の手続きのみのスポット契約</option>
+      <option value="B">B アドバイザリー顧問</option>
+      <option value="C">C レギュラー顧問</option>
+      <option value="D">D レギュラー顧問＋給与計算</option>
     </select>
   </label><br>
 
-  <label>新規適用:
+  <label>② 新規適用:
     <select id="application">
-      <option value="E">E社会保険・労働保険 両方</option>
-      <option value="F">F社会保険のみ</option>
-      <option value="G">G労働保険のみ</option>
+      <option value="E">E 社会保険新規適用、労働保険新規適用の両方</option>
+      <option value="F">F 社会保険新規適用のみ</option>
+      <option value="G">G 労働保険新規適用のみ</option>
     </select>
   </label><br>
 
-  <label>従業員数:
+  <label>③ 従業員数:
     <select id="employees">
-      <option value="H">H5人以下</option>
-      <option value="I">I6〜10人</option>
-      <option value="J">J11〜20人</option>
-      <option value="K">K21人以上</option>
+      <option value="H">H 5人以下</option>
+      <option value="I">I 6人以上10人以下</option>
+      <option value="J">J 11人以上20人以下</option>
+      <option value="K">K 21人以上</option>
     </select>
   </label><br>
 
-  <label>その他の手続き:</label><br>
-  <input type="checkbox" id="rule" value="rule"> L就業規則の作成<br>
-  <input type="checkbox" id="kyoutei" value="kyoutei"> M36協定届<br>
-  <input type="checkbox" id="henkei" value="henkei"> N1年変形協定届<br>
+  <label>④ その他の手続き:</label><br>
+  <input type="checkbox" id="rule" value="rule"> L 就業規則の作成<br>
+  <input type="checkbox" id="kyoutei" value="kyoutei"> M 36協定届<br>
+  <input type="checkbox" id="henkei" value="henkei"> N 1年単位の変形労働時間制に関する協定届<br>
 
   <button onclick="calculate()">料金を計算</button>
 
@@ -78,43 +78,48 @@
       let kyouteiFee = 0;
       let henkeiFee = 0;
 
-      // --- 質問①が「A（スポット契約）」の場合 ---
+      // --- 初回手続き料（質問①×②） ---
       if (plan === 'A') {
         if (application === 'E') initFee = 176000;
         else if (application === 'F') initFee = 110000;
         else if (application === 'G') initFee = 66000;
+      } else if (plan === 'B') {
+        if (application === 'E') initFee = 137500;
+        else if (application === 'F') initFee = 99000;
+        else if (application === 'G') initFee = 38500;
+      } else if (plan === 'C' || plan === 'D') {
+        if (application === 'E') initFee = 77000;
+        else if (application === 'F') initFee = 49500;
+        else if (application === 'G') initFee = 27500;
       }
 
-      // --- 質問①が「B（アドバイザリー顧問）」の場合 ---
+      // --- 月額料金（質問①×③） ---
       if (plan === 'B') {
         if (employees === 'H' || employees === 'I') monthFee = 13200;
         else if (employees === 'J') monthFee = 16500;
         else if (employees === 'K') monthFee = 27500;
-
-        if (rule) ruleFee = 99000;
-        if (kyoutei) kyouteiFee = 12100;
-        if (henkei) henkeiFee = 7700;
-      }
-
-      // --- 質問①が「C（レギュラー顧問）」の場合 ---
-      if (plan === 'C') {
+      } else if (plan === 'C') {
         if (employees === 'H') monthFee = 19800;
         else if (employees === 'I') monthFee = 26400;
         else if (employees === 'J') monthFee = 42900;
-        else if (employees === 'K') monthFee = 42900; // ～表記省略
-
-        if (rule) ruleFee = 0;
-        if (kyoutei) kyouteiFee = 12100;
-        if (henkei) henkeiFee = 7700;
-      }
-
-      // --- 質問①が「D（レギュラー顧問＋給与計算）」の場合 ---
-      if (plan === 'D') {
+        else if (employees === 'K') monthFee = 42900;
+      } else if (plan === 'D') {
         if (employees === 'H') monthFee = 42350;
         else if (employees === 'I') monthFee = 50600;
         else if (employees === 'J') monthFee = 66000;
-        else if (employees === 'K') monthFee = 66000; // ～表記省略
+        else if (employees === 'K') monthFee = 66000;
+      }
 
+      // --- オプション料（質問①×④） ---
+      if (plan === 'A') {
+        if (rule) ruleFee = 165000;
+        if (kyoutei) kyouteiFee = 27500;
+        if (henkei) henkeiFee = 12100;
+      } else if (plan === 'B') {
+        if (rule) ruleFee = 99000;
+        if (kyoutei) kyouteiFee = 12100;
+        if (henkei) henkeiFee = 7700;
+      } else if (plan === 'C' || plan === 'D') {
         if (rule) ruleFee = 0;
         if (kyoutei) kyouteiFee = 12100;
         if (henkei) henkeiFee = 7700;
