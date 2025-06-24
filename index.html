@@ -30,7 +30,7 @@
 
   <label>契約形態:
     <select id="plan">
-      <option value="A">A-スポット契約（新規適用のみ）</option>
+      <option value="A">Aスポット契約（新規適用のみ）</option>
       <option value="B">Bアドバイザリー顧問</option>
       <option value="C">Cレギュラー顧問</option>
       <option value="D">Dレギュラー顧問＋給与計算</option>
@@ -92,4 +92,46 @@
         else if (employees === 'K') monthFee = 27500;
 
         if (rule) ruleFee = 99000;
-        if (
+        if (kyoutei) kyouteiFee = 12100;
+        if (henkei) henkeiFee = 7700;
+      }
+
+      // --- 質問①が「C（レギュラー顧問）」の場合 ---
+      if (plan === 'C') {
+        if (employees === 'H') monthFee = 19800;
+        else if (employees === 'I') monthFee = 26400;
+        else if (employees === 'J') monthFee = 42900;
+        else if (employees === 'K') monthFee = 42900; // ～表記省略
+
+        if (rule) ruleFee = 0;
+        if (kyoutei) kyouteiFee = 12100;
+        if (henkei) henkeiFee = 7700;
+      }
+
+      // --- 質問①が「D（レギュラー顧問＋給与計算）」の場合 ---
+      if (plan === 'D') {
+        if (employees === 'H') monthFee = 42350;
+        else if (employees === 'I') monthFee = 50600;
+        else if (employees === 'J') monthFee = 66000;
+        else if (employees === 'K') monthFee = 66000; // ～表記省略
+
+        if (rule) ruleFee = 0;
+        if (kyoutei) kyouteiFee = 12100;
+        if (henkei) henkeiFee = 7700;
+      }
+
+      const total = initFee + ruleFee + kyouteiFee + henkeiFee;
+
+      document.getElementById('result').innerHTML = `
+        <strong>初回手続き料：</strong> ${initFee.toLocaleString()}円<br>
+        <strong>就業規則：</strong> ${ruleFee.toLocaleString()}円<br>
+        <strong>36協定：</strong> ${kyouteiFee.toLocaleString()}円<br>
+        <strong>1年変形協定：</strong> ${henkeiFee.toLocaleString()}円<br>
+        <hr>
+        <strong>初回合計：</strong> ${total.toLocaleString()}円<br>
+        <strong>月額料金：</strong> ${monthFee.toLocaleString()}円
+      `;
+    }
+  </script>
+</body>
+</html>
