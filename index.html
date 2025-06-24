@@ -30,34 +30,34 @@
 
   <label>契約形態:
     <select id="plan">
-      <option value="A">Aスポット契約（新規適用のみ）</option>
-      <option value="B">Bアドバイザリー顧問</option>
-      <option value="C">Cレギュラー顧問</option>
-      <option value="D">Dレギュラー顧問＋給与計算</option>
+      <option value="A">スポット契約（新規適用のみ）</option>
+      <option value="B">アドバイザリー顧問</option>
+      <option value="C">レギュラー顧問</option>
+      <option value="D">レギュラー顧問＋給与計算</option>
     </select>
   </label><br>
 
   <label>新規適用:
     <select id="application">
-      <option value="E">E社会保険・労働保険 両方</option>
-      <option value="F">F社会保険のみ</option>
-      <option value="G">G労働保険のみ</option>
+      <option value="E">社会保険・労働保険 両方</option>
+      <option value="F">社会保険のみ</option>
+      <option value="G">労働保険のみ</option>
     </select>
   </label><br>
 
   <label>従業員数:
     <select id="employees">
-      <option value="H">H5人以下</option>
-      <option value="I">I6〜10人</option>
-      <option value="J">J11〜20人</option>
-      <option value="K">K21人以上</option>
+      <option value="H">5人以下</option>
+      <option value="I">6〜10人</option>
+      <option value="J">11〜20人</option>
+      <option value="K">21人以上</option>
     </select>
   </label><br>
 
   <label>その他の手続き:</label><br>
-  <input type="checkbox" id="rule" value="rule"> L就業規則の作成<br>
-  <input type="checkbox" id="kyoutei" value="kyoutei"> M36協定届<br>
-  <input type="checkbox" id="henkei" value="henkei"> L1年変形協定届<br>
+  <input type="checkbox" id="rule" value="rule"> 就業規則の作成<br>
+  <input type="checkbox" id="kyoutei" value="kyoutei"> 36協定届<br>
+  <input type="checkbox" id="henkei" value="henkei"> 1年変形協定届<br>
 
   <button onclick="calculate()">料金を計算</button>
 
@@ -75,40 +75,21 @@
       let monthFee = 0;
       let initFee = 0;
       let ruleFee = 0;
-      let kyouteiFee = kyoutei ? 12100 : 0;
-      let henkeiFee = henkei ? 12100 : 0; // 仮に同額とする（要調整）
+      let kyouteiFee = 0;
+      let henkeiFee = 0;
 
-      // 月額・初回手続き料（仮設定）
+      // --- 質問①が「A（スポット契約）」の場合 ---
       if (plan === 'A') {
         if (application === 'E') initFee = 176000;
         else if (application === 'F') initFee = 110000;
         else if (application === 'G') initFee = 66000;
-      } else if (plan === 'B') {
-        monthFee = 13200;
-        if (application === 'E') initFee = 137500;
-        else if (application === 'F') initFee = 99000;
-        else if (application === 'G') initFee = 38500;
-        ruleFee = rule ? 100000 : 0;
-      } else if (plan === 'C' || plan === 'D') {
-        monthFee = 19800;
-        if (application === 'E') initFee = 77000;
-        else if (application === 'F') initFee = 49500;
-        else if (application === 'G') initFee = 27500;
-        ruleFee = rule ? 0 : 0;
       }
 
-      const total = initFee + ruleFee + kyouteiFee + henkeiFee;
+      // --- 質問①が「B（アドバイザリー顧問）」の場合 ---
+      if (plan === 'B') {
+        if (employees === 'H' || employees === 'I') monthFee = 13200;
+        else if (employees === 'J') monthFee = 16500;
+        else if (employees === 'K') monthFee = 27500;
 
-      document.getElementById('result').innerHTML = `
-        <strong>初回手続き料：</strong> ${initFee.toLocaleString()}円<br>
-        <strong>就業規則：</strong> ${ruleFee.toLocaleString()}円<br>
-        <strong>36協定：</strong> ${kyouteiFee.toLocaleString()}円<br>
-        <strong>1年変形協定：</strong> ${henkeiFee.toLocaleString()}円<br>
-        <hr>
-        <strong>初回合計：</strong> ${total.toLocaleString()}円<br>
-        <strong>月額料金：</strong> ${monthFee.toLocaleString()}円
-      `;
-    }
-  </script>
-</body>
-</html>
+        if (rule) ruleFee = 99000;
+        if (
